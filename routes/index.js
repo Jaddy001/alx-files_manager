@@ -1,9 +1,10 @@
-const express = require('express');
+import express from 'express';
+import AppController from '../controllers/AppController.js';
+
 const router = express.Router();
-const FilesController = require('../controllers/FilesController');
 
-// POST /files => FilesController.postUpload
-router.post('/files', FilesController.postUpload);
+router.get('/status', AppController.getStatus);
+router.get('/stats', AppController.getStats);
 
-module.exports = router;
+export default router;
 
