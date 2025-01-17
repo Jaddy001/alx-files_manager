@@ -1,25 +1,33 @@
-import redisClient from '../utils/redis';
-
 class UsersController {
-  static async getMe(req, res) {
-    const token = req.headers['x-token'];
-    if (!token) {
-      return res.status(401).send({ error: 'Unauthorized' });
-    }
+    static async postNew(req, res) {
+        try {
+            const { email, password } = req.body;
 
-    const userId = await redisClient.get(`auth_${token}`);
-    if (!userId) {
-      return res.status(401).send({ error: 'Unauthorized' });
-    }
+            // Validate email and password fields
+            if (!email) {
+                return res.status(400).json({ error: 'Missing email' });
+            }
+            if (!password) {
+                return res.status(400).json({ error: 'Missing password' });
+            }
 
-    const user = await dbClient.db.collection('users').findOne({ _id: ObjectId(userId) });
-    if (!user) {
-      return res.status(401).send({ error: 'Unauthorized' });
-    }
+            // Logic to handle user creation (example logic)
+            console.log(`Received user data: email=${email}, password=${password}`);
 
-    res.status(200).send({ id: user._id, email: user.email });
-  }
+            // Simulate user creation (replace with actual database logic)
+            const newUser = { id: 1, email, password };
+
+            // Send response
+            return res.status(201).json({
+                message: 'User created successfully',
+                user: newUser,
+            });
+        } catch (err) {
+            console.error('Error in postNew:', err.message);
+            return res.status(500).json({ error: 'Internal Server Error' });
+        }
+    }
 }
 
-export default UsersController;
+module.exports = UsersController;
 
